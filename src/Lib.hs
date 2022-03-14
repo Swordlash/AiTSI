@@ -1,6 +1,10 @@
-module Lib
-    ( someFunc
-    ) where
+{-# LANGUAGE TemplateHaskell #-}
+module Lib where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import Language.Haskell.TH
+
+x :: Int
+x = 42
+
+static :: Q Exp
+static = [| x |]
