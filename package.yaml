@@ -22,8 +22,33 @@ description:         Please see the README on GitHub at <https://github.com/Swor
 dependencies:
 - base >= 4.7 && < 5
 - template-haskell
-#- sqlite-simple
-#- opaleye
+- persistent
+- persistent-postgresql
+- esqueleto
+- text
+- monad-logger
+- mtl
+- bytestring
+- bcrypt
+- cryptonite
+
+default-extensions:
+- OverloadedStrings
+- GeneralizedNewtypeDeriving
+- DeriveGeneric
+- DerivingStrategies
+- DeriveAnyClass
+- TemplateHaskell
+- TypeFamilies
+- GADTs
+- StandaloneDeriving
+- UndecidableInstances
+- FlexibleInstances
+- DataKinds
+- MultiParamTypeClasses
+- QuasiQuotes
+- RankNTypes
+
 
 library:
   source-dirs: src
