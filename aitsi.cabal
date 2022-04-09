@@ -25,7 +25,13 @@ source-repository head
 
 library
   exposed-modules:
+      AppMonad
+      Clay.Instances
+      DbConn
       Lib
+      Meal
+      Passwords
+      Prologue
       Tables
       Test
   other-modules:
@@ -48,18 +54,34 @@ library
       MultiParamTypeClasses
       QuasiQuotes
       RankNTypes
+      DuplicateRecordFields
+      DisambiguateRecordFields
+      TypeApplications
+      StrictData
+      ImportQualifiedPost
+      NoImplicitPrelude
+      FlexibleContexts
   build-depends:
       base >=4.7 && <5
-    , bcrypt
+    , blaze-html
     , bytestring
+    , clay
+    , conduit
     , cryptonite
-    , esqueleto
+    , exceptions
+    , http-media
     , monad-logger
     , mtl
     , persistent
     , persistent-postgresql
+    , protolude
+    , servant
+    , servant-blaze
+    , servant-server
     , template-haskell
     , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 executable aitsi-exe
@@ -84,20 +106,36 @@ executable aitsi-exe
       MultiParamTypeClasses
       QuasiQuotes
       RankNTypes
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+      DuplicateRecordFields
+      DisambiguateRecordFields
+      TypeApplications
+      StrictData
+      ImportQualifiedPost
+      NoImplicitPrelude
+      FlexibleContexts
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aitsi
     , base >=4.7 && <5
-    , bcrypt
+    , blaze-html
     , bytestring
+    , clay
+    , conduit
     , cryptonite
-    , esqueleto
+    , exceptions
+    , http-media
     , monad-logger
     , mtl
     , persistent
     , persistent-postgresql
+    , protolude
+    , servant
+    , servant-blaze
+    , servant-server
     , template-haskell
     , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 test-suite aitsi-test
@@ -123,18 +161,34 @@ test-suite aitsi-test
       MultiParamTypeClasses
       QuasiQuotes
       RankNTypes
+      DuplicateRecordFields
+      DisambiguateRecordFields
+      TypeApplications
+      StrictData
+      ImportQualifiedPost
+      NoImplicitPrelude
+      FlexibleContexts
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aitsi
     , base >=4.7 && <5
-    , bcrypt
+    , blaze-html
     , bytestring
+    , clay
+    , conduit
     , cryptonite
-    , esqueleto
+    , exceptions
+    , http-media
     , monad-logger
     , mtl
     , persistent
     , persistent-postgresql
+    , protolude
+    , servant
+    , servant-blaze
+    , servant-server
     , template-haskell
     , text
+    , wai
+    , warp
   default-language: Haskell2010

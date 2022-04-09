@@ -24,13 +24,22 @@ dependencies:
 - template-haskell
 - persistent
 - persistent-postgresql
-- esqueleto
 - text
 - monad-logger
 - mtl
 - bytestring
-- bcrypt
 - cryptonite
+- blaze-html
+- http-media
+- servant
+- servant-server
+- servant-blaze
+- protolude
+- clay
+- conduit
+- wai
+- warp
+- exceptions
 
 default-extensions:
 - OverloadedStrings
@@ -48,7 +57,13 @@ default-extensions:
 - MultiParamTypeClasses
 - QuasiQuotes
 - RankNTypes
-
+- DuplicateRecordFields
+- DisambiguateRecordFields
+- TypeApplications
+- StrictData
+- ImportQualifiedPost
+- NoImplicitPrelude
+- FlexibleContexts
 
 library:
   source-dirs: src
@@ -58,6 +73,7 @@ executables:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
+    - -Wall
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N

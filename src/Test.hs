@@ -1,10 +1,8 @@
 module Test where
 
+import Prologue
+
 import Tables
-import Database.Persist.Postgresql (runMigration, SqlBackend, PersistQueryWrite (..), Filter, PersistStoreWrite (insert), runMigrationUnsafe)
-import Control.Monad.Reader
-
-
 
 prepareTestDatabase :: MonadIO m => ReaderT SqlBackend m ()
 prepareTestDatabase = do

@@ -1,9 +1,8 @@
 module Tables where
 
-import Data.Text
-import Data.ByteString
-import Database.Persist
+import Prologue
 import Database.Persist.TH
+import Passwords (PasswordHash(..))
 
 share [ mkPersist sqlSettings, mkMigrate "migrateAll" ] [persistLowerCase|
 Ingredient
@@ -30,7 +29,7 @@ IsIngredient
 User
   firstName Text
   lastName Text
-  bcryptHash ByteString
+  bcryptHash PasswordHash
   UniqueUser firstName lastName
   deriving Show
 |]
