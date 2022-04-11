@@ -1,7 +1,7 @@
 module Main where
 
 import Protolude
-import qualified Lib
+import qualified LibMain
 
 main :: IO ()
-main = Lib.main
+main = LibMain.main

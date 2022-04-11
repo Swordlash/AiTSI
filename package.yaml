@@ -38,8 +38,11 @@ dependencies:
 - clay
 - conduit
 - wai
+- wai-extra
 - warp
 - exceptions
+- resource-pool
+- data-default
 
 default-extensions:
 - OverloadedStrings
@@ -64,6 +67,7 @@ default-extensions:
 - ImportQualifiedPost
 - NoImplicitPrelude
 - FlexibleContexts
+- TupleSections
 
 library:
   source-dirs: src

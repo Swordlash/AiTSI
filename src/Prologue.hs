@@ -8,6 +8,7 @@ module Prologue
   , MonadThrow(..)
   , MonadCatch(..)
   , MonadMask(..)
+  , MonadUnliftIO(..)
   , try
   ) where
 
