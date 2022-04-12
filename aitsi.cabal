@@ -65,15 +65,22 @@ library
       NoImplicitPrelude
       FlexibleContexts
       TupleSections
+      PartialTypeSignatures
+      ScopedTypeVariables
+      TypeOperators
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , blaze-html
     , bytestring
     , clay
     , conduit
+    , containers
     , cryptonite
     , data-default
+    , esqueleto
     , exceptions
+    , extra
     , http-media
     , monad-logger
     , mtl
@@ -121,17 +128,24 @@ executable aitsi-exe
       NoImplicitPrelude
       FlexibleContexts
       TupleSections
+      PartialTypeSignatures
+      ScopedTypeVariables
+      TypeOperators
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aitsi
+      aeson
+    , aitsi
     , base >=4.7 && <5
     , blaze-html
     , bytestring
     , clay
     , conduit
+    , containers
     , cryptonite
     , data-default
+    , esqueleto
     , exceptions
+    , extra
     , http-media
     , monad-logger
     , mtl
@@ -180,17 +194,24 @@ test-suite aitsi-test
       NoImplicitPrelude
       FlexibleContexts
       TupleSections
+      PartialTypeSignatures
+      ScopedTypeVariables
+      TypeOperators
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aitsi
+      aeson
+    , aitsi
     , base >=4.7 && <5
     , blaze-html
     , bytestring
     , clay
     , conduit
+    , containers
     , cryptonite
     , data-default
+    , esqueleto
     , exceptions
+    , extra
     , http-media
     , monad-logger
     , mtl

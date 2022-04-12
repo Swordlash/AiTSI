@@ -4,6 +4,8 @@ import Prologue
 import Database.Persist.TH
 import Passwords (PasswordHash(..))
 
+import Data.Aeson
+
 share [ mkPersist sqlSettings, mkMigrate "migrateAll" ] [persistLowerCase|
 Ingredient
   name Text
@@ -13,23 +15,34 @@ Ingredient
   fat Double
   protein Double
   UniqueIngredientName name
-  deriving Show
+  deriving Generic Show Eq
 
 Meal
   name Text
   UniqueMealName name
-  deriving Show
+  deriving Generic Show
 
 IsIngredient
   ingredientId IngredientId DeleteCascade
   mealId MealId DeleteCascade
+  ingredientQuantity Double
   UniqueIsIngredient ingredientId mealId
-  deriving Show
+  deriving Generic Show
 
 User
   firstName Text
   lastName Text
   bcryptHash PasswordHash
   UniqueUser firstName lastName
-  deriving Show
+  deriving Generic Show
 |]
+
+instance Ord Ingredient where
+  compare = comparing ingredientName
+
+instance ToJSONKey Ingredient
+instance ToJSON Ingredient
+instance FromJSON Ingredient
+
+instance ToJSON Meal
+instance FromJSON Meal
