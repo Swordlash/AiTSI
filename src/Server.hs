@@ -25,6 +25,7 @@ type API auths = (Servant.Auth.Server.Auth auths Username :> Protected) :<|> Unp
 type Unprotected 
   = Index
   :<|> Login
+  :<|> Register
 
 type Protected = GetAllMeals
 
@@ -54,7 +55,10 @@ appServer pool key = middleware
     server = serveProtected :<|> serveUnprotected
 
     serveUnprotected :: ServerT Unprotected AppM
-    serveUnprotected = serveIndex :<|> serveLogin cookieSettings jwtSettings
+    serveUnprotected 
+      = serveIndex 
+      :<|> serveLogin cookieSettings jwtSettings
+      :<|> serveRegister cookieSettings jwtSettings
 
     serveIndex :: ServerT Index AppM
     serveIndex = pure Index.index

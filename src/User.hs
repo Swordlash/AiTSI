@@ -6,9 +6,10 @@ import Passwords
 import Data.Either.Extra (mapLeft)
 import Data.Aeson
 import Servant.Auth.JWT
+import Servant (FromHttpApiData)
 
 newtype Username = Username Text
-  deriving newtype (Show, ToJSON, FromJSON, PersistField, PersistFieldSql)
+  deriving newtype (Show, ToJSON, FromJSON, PersistField, PersistFieldSql, FromHttpApiData)
   deriving anyclass (ToJWT, FromJWT)
 
 share [ mkPersist sqlSettings, mkMigrate "migrateAllUsers" ] [persistLowerCase|
@@ -21,6 +22,12 @@ User
   UniqueUser firstName lastName
   deriving Generic Show
 |]
+
+addUser :: MonadIO m => Username -> Text -> Text -> Password -> ReaderT SqlBackend m User
+addUser username firstName lastName password = do
+  let bcryptHash = generatePasswordHash password
+      user       = User firstName lastName username bcryptHash
+  insert user $> user
 
 checkCreds :: MonadIO m => Text -> Password -> ReaderT SqlBackend (ExceptT Text m) Username
 checkCreds username password = do
