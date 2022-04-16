@@ -3,10 +3,11 @@ module Test where
 import Prologue
 
 import Tables
+import User
 
 prepareTestDatabase :: MonadIO m => ReaderT SqlBackend m ()
 prepareTestDatabase = do
-  runMigrationUnsafe migrateAll
+  traverse_ runMigrationUnsafe [ migrateAllTables, migrateAllUsers ]
 
   deleteWhere ([] :: [Filter Ingredient])
   deleteWhere ([] :: [Filter User])

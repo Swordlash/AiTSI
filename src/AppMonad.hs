@@ -35,6 +35,3 @@ hoistServerM pool =
   . runLogging
   . liftWithPool pool
   . runServerM
-
-serveApp :: HasServer api '[] => DbPool -> Proxy api -> ServerT api AppM -> Application
-serveApp pool proxy = serve proxy . hoistServer proxy (hoistServerM pool)

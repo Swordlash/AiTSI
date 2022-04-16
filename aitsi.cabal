@@ -30,6 +30,7 @@ library
       DbConn
       LibMain
       Logging
+      Login
       Meal
       Pages.Index
       Passwords
@@ -37,6 +38,7 @@ library
       Server
       Tables
       Test
+      User
   other-modules:
       Paths_aitsi
   hs-source-dirs:
@@ -68,6 +70,9 @@ library
       PartialTypeSignatures
       ScopedTypeVariables
       TypeOperators
+      NamedFieldPuns
+      PolyKinds
+      LambdaCase
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -81,7 +86,9 @@ library
     , esqueleto
     , exceptions
     , extra
+    , http-api-data
     , http-media
+    , jose
     , monad-logger
     , mtl
     , persistent
@@ -89,10 +96,13 @@ library
     , protolude
     , resource-pool
     , servant
+    , servant-auth
+    , servant-auth-server
     , servant-blaze
     , servant-server
     , template-haskell
     , text
+    , transformers
     , wai
     , wai-extra
     , warp
@@ -131,6 +141,9 @@ executable aitsi-exe
       PartialTypeSignatures
       ScopedTypeVariables
       TypeOperators
+      NamedFieldPuns
+      PolyKinds
+      LambdaCase
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -146,7 +159,9 @@ executable aitsi-exe
     , esqueleto
     , exceptions
     , extra
+    , http-api-data
     , http-media
+    , jose
     , monad-logger
     , mtl
     , persistent
@@ -154,10 +169,13 @@ executable aitsi-exe
     , protolude
     , resource-pool
     , servant
+    , servant-auth
+    , servant-auth-server
     , servant-blaze
     , servant-server
     , template-haskell
     , text
+    , transformers
     , wai
     , wai-extra
     , warp
@@ -197,6 +215,9 @@ test-suite aitsi-test
       PartialTypeSignatures
       ScopedTypeVariables
       TypeOperators
+      NamedFieldPuns
+      PolyKinds
+      LambdaCase
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -212,7 +233,9 @@ test-suite aitsi-test
     , esqueleto
     , exceptions
     , extra
+    , http-api-data
     , http-media
+    , jose
     , monad-logger
     , mtl
     , persistent
@@ -220,10 +243,13 @@ test-suite aitsi-test
     , protolude
     , resource-pool
     , servant
+    , servant-auth
+    , servant-auth-server
     , servant-blaze
     , servant-server
     , template-haskell
     , text
+    , transformers
     , wai
     , wai-extra
     , warp

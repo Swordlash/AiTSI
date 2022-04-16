@@ -6,7 +6,7 @@ import Passwords (PasswordHash(..))
 
 import Data.Aeson
 
-share [ mkPersist sqlSettings, mkMigrate "migrateAll" ] [persistLowerCase|
+share [ mkPersist sqlSettings, mkMigrate "migrateAllTables" ] [persistLowerCase|
 Ingredient
   name Text
   quantity Double
@@ -27,13 +27,6 @@ IsIngredient
   mealId MealId DeleteCascade
   ingredientQuantity Double
   UniqueIsIngredient ingredientId mealId
-  deriving Generic Show
-
-User
-  firstName Text
-  lastName Text
-  bcryptHash PasswordHash
-  UniqueUser firstName lastName
   deriving Generic Show
 |]
 

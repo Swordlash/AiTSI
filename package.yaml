@@ -35,6 +35,8 @@ dependencies:
 - servant
 - servant-server
 - servant-blaze
+- servant-auth
+- servant-auth-server
 - protolude
 - clay
 - conduit
@@ -47,6 +49,9 @@ dependencies:
 - aeson
 - containers
 - extra
+- http-api-data
+- transformers
+- jose
 
 default-extensions:
 - OverloadedStrings
@@ -75,6 +80,9 @@ default-extensions:
 - PartialTypeSignatures
 - ScopedTypeVariables
 - TypeOperators
+- NamedFieldPuns
+- PolyKinds
+- LambdaCase
 
 library:
   source-dirs: src

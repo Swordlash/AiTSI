@@ -4,6 +4,8 @@ module Prologue
   , getDb
   , module Database.Persist
   , module Database.Persist.Postgresql
+  , module Control.Monad.Except
+  , module Control.Monad.Reader
   , ResourceT(..)
   , MonadThrow(..)
   , MonadCatch(..)
@@ -19,6 +21,8 @@ import Database.Persist hiding (get)
 import qualified Database.Persist
 import Conduit
 import Control.Monad.Catch
+import Control.Monad.Reader
+import Control.Monad.Except
 
 
 getDb :: (PersistStoreRead backend, MonadIO m, PersistRecordBackend record backend) 
