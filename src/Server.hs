@@ -11,6 +11,7 @@ import AppMonad
 import Pages.Index    qualified as Index
 import Pages.Login    qualified as Login
 import Pages.Register qualified as Register
+import Pages.Redirect qualified as Redirect
 
 import Text.Blaze.Html (Html)
 import Network.Wai
@@ -55,7 +56,8 @@ appServer pool key = middleware
     context = cookieSettings :. jwtSettings :. EmptyContext
 
     jwtSettings = defaultJWTSettings key
-    cookieSettings = defaultCookieSettings
+    cookieSettings = defaultCookieSettings 
+      { cookieIsSecure = NotSecure, cookieSameSite = SameSiteStrict, cookieXsrfSetting = Nothing }
 
     middleware :: Middleware
     middleware = requestLoggingMiddleware
@@ -89,7 +91,6 @@ appServer pool key = middleware
       NoSuchUser  -> throwError err401 { errBody = "User not found" }
       Indefinite  -> throwError err401 { errBody = "Try other authentication method" }
       Authenticated username -> act username
-
 
     serveMeals :: AuthResult Username -> AppM [Meal']
     serveMeals = withAuth $ const $ AppM getAllMeals

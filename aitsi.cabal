@@ -34,6 +34,7 @@ library
       Meal
       Pages.Index
       Pages.Login
+      Pages.Redirect
       Pages.Register
       Passwords
       Prologue
