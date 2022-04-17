@@ -8,7 +8,10 @@ import Servant.HTML.Blaze (HTML)
 import DbConn (DbPool)
 import AppMonad
 
-import Pages.Index qualified as Index
+import Pages.Index    qualified as Index
+import Pages.Login    qualified as Login
+import Pages.Register qualified as Register
+
 import Text.Blaze.Html (Html)
 import Network.Wai
 import Network.Wai.Middleware.RequestLogger
@@ -24,14 +27,20 @@ type API auths = (Servant.Auth.Server.Auth auths Username :> Protected) :<|> Unp
 
 type Unprotected 
   = Index
+  :<|> LoginAPI
   :<|> Login
+  :<|> RegisterAPI
   :<|> Register
 
 type Protected = GetAllMeals
 
-type Index = Get '[HTML] Html
+
+type Index       = Get '[HTML] Html
+type Login       = "login" :> Get '[HTML] Html
+type Register    = "register" :> Get '[HTML] Html
 
 type GetAllMeals = "allMeals" :> Get '[JSON] [Meal']
+
 
 type API' = API '[Cookie, JWT]
 
@@ -57,11 +66,19 @@ appServer pool key = middleware
     serveUnprotected :: ServerT Unprotected AppM
     serveUnprotected 
       = serveIndex 
-      :<|> serveLogin cookieSettings jwtSettings
-      :<|> serveRegister cookieSettings jwtSettings
+      :<|> serveLoginAPI cookieSettings jwtSettings
+      :<|> serveLogin
+      :<|> serveRegisterAPI cookieSettings jwtSettings
+      :<|> serveRegister
 
     serveIndex :: ServerT Index AppM
     serveIndex = pure Index.index
+
+    serveLogin :: ServerT Login AppM
+    serveLogin = pure Login.login
+
+    serveRegister :: ServerT Register AppM
+    serveRegister = pure Register.register
 
     serveProtected :: ServerT (Servant.Auth.Server.Auth auths Username :> Protected) AppM
     serveProtected = serveMeals

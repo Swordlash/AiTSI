@@ -9,10 +9,12 @@ import Servant.Auth.Server
 import AppMonad (AppM)
 import User
 
-type NoContentTwoCookies = (Headers '[ Header "Set-Cookie" SetCookie
-                                     , Header "Set-Cookie" SetCookie
-                                     ]
-                                     NoContent)
+type TwoCookies a = (Headers '[ Header "Set-Cookie" SetCookie
+                              , Header "Set-Cookie" SetCookie
+                              ]
+                              a)
+
+type NoContentTwoCookies = TwoCookies NoContent
 
 acceptLoginUsername :: (MonadIO m, MonadError ServerError m) => CookieSettings -> JWTSettings -> Username -> m NoContentTwoCookies
 acceptLoginUsername cs jwt username = do
@@ -27,13 +29,14 @@ data LoginForm = LoginForm { username :: Text, password :: Password }
   deriving stock Generic
   deriving anyclass FromForm
 
-type Login 
-  = "login"
+type LoginAPI
+  =  "api"
+  :> "login"
   :> ReqBody '[FormUrlEncoded] LoginForm
   :> Verb 'POST 204 '[PlainText] NoContentTwoCookies
 
-serveLogin :: CookieSettings -> JWTSettings -> ServerT Login AppM
-serveLogin cs jwts LoginForm{username, password} = do
+serveLoginAPI :: CookieSettings -> JWTSettings -> ServerT LoginAPI AppM
+serveLoginAPI cs jwts LoginForm{username, password} = do
   backend <- ask
   username'e <- runExceptT $ flip runReaderT backend $ checkCreds username password
   case username'e of
@@ -46,13 +49,14 @@ data RegisterForm = RegisterForm { firstName :: Text, lastName :: Text, username
   deriving stock Generic
   deriving anyclass FromForm
 
-type Register 
-  = "login"
+type RegisterAPI
+  = "api"
+  :> "register"
   :> ReqBody '[FormUrlEncoded] RegisterForm
   :> Verb 'POST 204 '[PlainText] NoContentTwoCookies
 
-serveRegister :: CookieSettings -> JWTSettings -> ServerT Register AppM
-serveRegister cs jwts RegisterForm{..} = do
+serveRegisterAPI :: CookieSettings -> JWTSettings -> ServerT RegisterAPI AppM
+serveRegisterAPI cs jwts RegisterForm{..} = do
   backend <- ask
   addUser username firstName lastName password `runReaderT` backend
   acceptLoginUsername cs jwts username

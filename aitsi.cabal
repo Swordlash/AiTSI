@@ -33,6 +33,8 @@ library
       Login
       Meal
       Pages.Index
+      Pages.Login
+      Pages.Register
       Passwords
       Prologue
       Server

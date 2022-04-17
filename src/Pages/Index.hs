@@ -5,7 +5,7 @@ import Text.Blaze.Html (Html)
 import Text.Blaze.Html5 qualified as H
 
 index :: Html
-index = H.docTypeHtml $ do
+index = H.docTypeHtml $ H.html $ do
   H.head $ H.title "Hello Blaze!"
   H.body $ do
     H.p $ H.text "Welcome user"
