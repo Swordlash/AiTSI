@@ -26,18 +26,17 @@ import Crypto.JOSE
 
 type API auths = (Servant.Auth.Server.Auth auths Username :> Protected) :<|> Unprotected
 
-type Unprotected 
-  = Index
-  :<|> LoginAPI
+type Unprotected
+  = LoginAPI
   :<|> Login
   :<|> RegisterAPI
   :<|> Register
 
-type Protected = GetAllMeals
+type Protected = Index :<|> GetAllMeals
 
 
-type Index       = Get '[HTML] Html
-type Login       = "login" :> Get '[HTML] Html
+type Index       = "hello" :> Get '[HTML] Html
+type Login       = Get '[HTML] Html
 type Register    = "register" :> Get '[HTML] Html
 
 type GetAllMeals = "allMeals" :> Get '[JSON] [Meal']
@@ -57,7 +56,10 @@ appServer pool key = middleware
 
     jwtSettings = defaultJWTSettings key
     cookieSettings = defaultCookieSettings 
-      { cookieIsSecure = NotSecure, cookieSameSite = SameSiteStrict, cookieXsrfSetting = Nothing }
+      { cookieIsSecure = NotSecure
+      , cookieSameSite = SameSiteStrict
+      , cookieXsrfSetting = Nothing 
+      }
 
     middleware :: Middleware
     middleware = requestLoggingMiddleware
@@ -67,14 +69,13 @@ appServer pool key = middleware
 
     serveUnprotected :: ServerT Unprotected AppM
     serveUnprotected 
-      = serveIndex 
-      :<|> serveLoginAPI cookieSettings jwtSettings
+      = serveLoginAPI cookieSettings jwtSettings
       :<|> serveLogin
       :<|> serveRegisterAPI cookieSettings jwtSettings
       :<|> serveRegister
 
-    serveIndex :: ServerT Index AppM
-    serveIndex = pure Index.index
+    serveIndex :: Username -> AppM Html
+    serveIndex = pure . Index.index
 
     serveLogin :: ServerT Login AppM
     serveLogin = pure Login.login
@@ -82,15 +83,12 @@ appServer pool key = middleware
     serveRegister :: ServerT Register AppM
     serveRegister = pure Register.register
 
-    serveProtected :: ServerT (Servant.Auth.Server.Auth auths Username :> Protected) AppM
-    serveProtected = serveMeals
+    serveProtected :: AuthResult Username -> ServerT Protected AppM
+    serveProtected result = case result of
+      BadPassword -> throwAll err401 { errBody = "Bad password" }
+      NoSuchUser  -> throwAll err401 { errBody = "User not found" }
+      Indefinite  -> throwAll err401 { errBody = "Try other authentication method" }
+      Authenticated username -> serveIndex username :<|> serveMeals
 
-    withAuth :: (Username -> AppM a) -> (AuthResult Username -> AppM a)
-    withAuth act = \case 
-      BadPassword -> throwError err401 { errBody = "Bad password" }
-      NoSuchUser  -> throwError err401 { errBody = "User not found" }
-      Indefinite  -> throwError err401 { errBody = "Try other authentication method" }
-      Authenticated username -> act username
-
-    serveMeals :: AuthResult Username -> AppM [Meal']
-    serveMeals = withAuth $ const $ AppM getAllMeals
+    serveMeals :: ServerT GetAllMeals AppM
+    serveMeals = AppM getAllMeals

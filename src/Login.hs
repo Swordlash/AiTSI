@@ -45,7 +45,7 @@ serveLoginAPI cs jwts LoginForm{username, password} = do
   username'e <- runExceptT $ flip runReaderT backend $ checkCreds username password
   case username'e of
     Left err       -> throwError err401 { errBody = toS err }
-    Right username -> acceptLoginUsername cs jwts username (Redirect.redirect "./allMeals")
+    Right username -> acceptLoginUsername cs jwts username (Redirect.redirect "/hello")
 
 --------------------------------------------------------------------------
 
@@ -63,4 +63,4 @@ serveRegisterAPI :: CookieSettings -> JWTSettings -> ServerT RegisterAPI AppM
 serveRegisterAPI cs jwts RegisterForm{..} = do
   backend <- ask
   addUser username firstName lastName password `runReaderT` backend
-  acceptLoginUsername cs jwts username (Redirect.redirect "./allMeals")
+  acceptLoginUsername cs jwts username (Redirect.redirect "/hello")
